@@ -1,9 +1,10 @@
 import React from 'react'
+import MainPage from './Components/MainPage'
 
 const App = () => {
   return (
     <div>
-      Quiz App
+      <MainPage />
     </div>
   )
 }
