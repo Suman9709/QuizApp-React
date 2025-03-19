@@ -1,43 +1,71 @@
-import React from 'react'
-import Button from './Button'
+import React, { useState } from 'react';
+import Button from './Button';
+import questions from './QuestionData';
 
 const Questions = () => {
+    const [selected, setSelected] = useState({}); // Store selected answers
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+
+
+    const handleNext = () => {
+        if (currentIndex < questions.length - 1) {
+            setCurrentIndex((prev) => prev + 1);
+        }
+    };
+
+    const handlePrev = () => {
+        if (currentIndex > 0) {
+            setCurrentIndex((prev) => prev - 1);
+        }
+    };
+
+    const handleSelect = (questionId, option) => {
+        setSelected((prev) => ({
+            ...prev,
+            [questionId]: option, 
+        }));
+    };
+
+    const currentQuestion = questions[currentIndex];
+
     return (
-        <div className='question-section flex  flex-col  w-1/2 border-2 p-2'>
-            <div>
-                <div>
-                    <p>1. This is question 1</p>
-                </div>
-                <div className='flex flex-col pl-4' >
-                    <div className='flex gap-4 items-center '>
-                        <input type="radio" id="html" name='q1' value='HTML' />
-                        <label htmlFor="html">HTML</label>
-                    </div>
+        <div className="question-section flex flex-col w-1/2 border-2 p-2 h-1/2">
+            <div key={currentQuestion.id} className="mb-4 w-full h-full">
+                <p className="font-semibold">
+                    {currentQuestion.id}. {currentQuestion.question}
+                </p>
 
-                    <div className='flex gap-4 items-center '>
-                        <input type="radio" id='css' name='q1' value='CSS' />
-                        <label htmlFor="css">CSS</label>
-                    </div>
-
-                    <div className='flex gap-4 items-center '>
-                        <input type="radio" id='js' name='q1' value='JS' />
-                        <label htmlFor="js">JS</label>
-                    </div>
-                    <div className='flex gap-4 items-center '>
-
-                        <input type="radio" id='cpp' name='q1' value='CPP' />
-                        <label htmlFor="cpp">CPP</label>
-                    </div>
+                <div className="flex flex-col pl-4">
+                    {currentQuestion.options.map((option, index) => (
+                        <div
+                            key={index}
+                            className="flex gap-4 items-center cursor-pointer"
+                            onClick={() => handleSelect(currentQuestion.id, option)}
+                        >
+                            <input
+                                type="radio"
+                                id={`${currentQuestion.id}-${index}`}
+                                name={`quest${currentQuestion.id}`}
+                                value={option}
+                                checked={selected[currentQuestion.id] === option} // Ensure selection persists
+                                readOnly
+                            />
+                            <label htmlFor={`${currentQuestion.id}-${index}`}>{option}</label>
+                        </div>
+                    ))}
                 </div>
             </div>
 
-            <div className='w-full flex  justify-between p-4'>
-                <Button label="Prev" />
-                <Button label="Next" />
+            <div className="flex justify-between">
+                <Button label="Prev" onClick={handlePrev} disabled={currentIndex === 0} />
+                <Button label="Next" onClick={handleNext} disabled={currentIndex === questions.length - 1} />
             </div>
-
+            <div className='w-full flex justify-center mt-4'>
+                <Button label='Submit' onClick={onclick} disabled={currentIndex < questions.length - 1} />
+            </div>
         </div>
-    )
-}
+    );
+};
 
-export default Questions
+export default Questions;
