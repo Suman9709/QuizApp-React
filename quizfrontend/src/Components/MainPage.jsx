@@ -1,24 +1,27 @@
-import React from 'react'
-import NavBar from './NavBar'
-import Button from './Button'
-import Questions from './Questions'
+import React, { useState } from 'react';
+import NavBar from './NavBar';
+import Questions from './Questions';
+import Timer from './Timer';
 
 const MainPage = () => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = () => {
+    setIsSubmitted(true);
+    console.log('Quiz Submitted');
+  };
+
   return (
-    <div className='border-2 border-black w-screen h-screen '>
+    <div className="w-screen h-screen">
       <div>
         <NavBar />
-
       </div>
-      <div className=' flex items-center justify-center mt-20 '>
-        {/* <Button label="Submit" /> */}
-        <Questions />
+      <div className="flex flex-col items-center justify-center mt-20">
+        {!isSubmitted && <Timer initialTime={120} onTimeUp={handleSubmit} />}
+        <Questions isSubmitted={isSubmitted} onSubmit={handleSubmit} />
       </div>
-
-
     </div>
+  );
+};
 
-  )
-}
-
-export default MainPage
+export default MainPage;
