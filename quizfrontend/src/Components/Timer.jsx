@@ -23,7 +23,7 @@ const Timer = ({ initialTime, onTimeUp }) => {
   };
 
   return (
-    <div className="text-xl font-bold text-red-500 border-2 p-2 rounded-md m-4">
+    <div className="text-xl font-bold text-red-500 border-2 p-2 rounded-md m-4 w-1/4 flex justify-center">
       Time Left: {formatTime(timeLeft)}
     </div>
   );
